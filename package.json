@@ -1,0 +1,28 @@
+{
+    "name": "node-recipes",
+    "version": "1.0.0",
+    "description": "a database of recipes made using node and mongodb",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wtbtucker/node-recipes.git"
+    },
+    "author": "net ninja",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/wtbtucker/node-recipes/issues"
+    },
+    "homepage": "https://github.com/wtbtucker/node-recipes#readme",
+    "dependencies": {
+        "ejs": "^3.1.2",
+        "express": "^4.17.1",
+        "lodash": "^4.17.15",
+        "mongoose": "^5.9.10",
+        "morgan": "^1.10.0",
+        "nodemon": "^2.0.20"
+    }
+}
