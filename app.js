@@ -1,8 +1,3 @@
-// TODO
-    // change recipe schema to better reflect the data structure of ingredients (ingredient: units: quantity)
-    //
-
-
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');

@@ -6,9 +6,19 @@
   <div class="details content">
     <h2><%= recipe.title %></h2>
     <div class="content">
-      <p><%= recipe.body %></p>
+      <h3>Ingredients</h3>
+      <table>
+        <% for (let key of recipe.ingredients.keys()) { %>
+          <tr>
+            <td><%= recipe.ingredients.get(key) %></td>
+            <td><%= key %></td>
+          </tr>
+        <% } %>
+      </table>
+      <h3>Instructions</h3>
+      <p><%= recipe.instructions %></p>
     </div>
-    <a class="delete" data-doc="<%= recupe._id %>">
+    <a class="delete" data-doc="<%= recipe._id %>">
       delete
     </a>
   </div>

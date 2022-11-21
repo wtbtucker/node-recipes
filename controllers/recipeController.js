@@ -21,8 +21,17 @@ const recipe_create_get = (req, res) => {
     res.render('create', { title: 'Create new recipe' })
 }
 
+// change new recipe form to fit model structure
+    // create form with user data and error message if not valid
+    // recipe schema to better reflect the data structure of ingredients (ingredient: units: quantity)
+    // Instructions: text area for each step
+    // Ingredients: Matrix with ingredient and quantity columns
+
+
 const recipe_create_post = (req, res) => {
-    const recipe = new Recipe(req.body);
+    const recipeRequest = req.body;
+    const recipe = new Recipe({ title: recipeRequest["title"], instructions: recipeRequest["instructions"], ingredients: {} });
+    recipe.ingredients.set(recipeRequest["ingredient-name"], recipeRequest["ingredient-quantity"]);
     recipe.save()
         .then(result => {
             res.redirect('/recipes');

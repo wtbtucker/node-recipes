@@ -4,15 +4,30 @@
   <%- include("./partials/nav.ejs") %>
 
   <div class="create-recipe content">
-    <form action="/recipes" method="POST">
+    <form action="/recipes" method="POST" id="create-recipe">
       <label for="title">Recipe title:</label>
       <input type="text" id="title" name="title" required>
-      <label for="ingredients">Ingredients:</label>
-      <input type="text" id="ingredients" name="ingredients" required>
+
+      
       <label for="instructions">Instructions:</label>
-      <textarea id="ingredients" name="ingredients" required></textarea>
+      <textarea id="instructions" name="instructions[]" required></textarea>
+      
       <button>Submit</button>
     </form>
+    <table>
+      <tr>
+        <th>Ingredient</th>
+        <th>Quantity</th>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" id="ingredient-name" name="ingredient-name" form="create-recipe">
+        </td>
+        <td>
+          <input type="text" id="ingredient-quantity" name="ingredient-quantity" form="create-recipe">
+        </td>
+      </tr>
+    </table>
   </div>
 
   <%- include("./partials/footer.ejs") %>
