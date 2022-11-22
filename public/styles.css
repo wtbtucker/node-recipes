@@ -1,0 +1,28 @@
+*{
+    font-family: "Source Sans Pro",sans-serif;
+}
+
+body{
+    margin: 0px;
+    background-color: #FCFDF2;
+}
+nav{
+    display: flex;
+    width: 100%;
+    background-color: #FFE9B1;
+    color: #7743DB;
+}
+
+nav > ul {
+    display: flex;
+}
+
+a{
+    text-decoration: none;
+    color: #3B3486;
+    opacity: 80%;
+}
+
+ul{
+    list-style: none;
+}
