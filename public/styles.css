@@ -43,6 +43,7 @@ a{
     text-decoration: none;
     color: #3B3486;
     opacity: 80%;
+    font-size: 24px;
 }
 
 a:hover{
@@ -58,10 +59,15 @@ body{
 }
 
 .content{
-    display: flex;
-    flex-direction: column;
+    height:100%;
+}
+
+.recipe.content,
+.details.content{
+    margin-bottom: -18px;
 }
 
 .footer{
-    margin-top: auto;
+    height: 50px;
 }
+

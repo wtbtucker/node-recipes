@@ -3,9 +3,9 @@
 <body>
   <%- include("./partials/nav.ejs") %>
 
-  <div class="details content">
+  <div class="content">
     <h2><%= recipe.title %></h2>
-    <div class="content">
+    <div class="details content">
       <h3>Ingredients</h3>
       <table>
         <% for (let key of recipe.ingredients.keys()) { %>
@@ -17,13 +17,12 @@
       </table>
       <h3>Instructions</h3>
       <p><%= recipe.instructions %></p>
+      <a class="delete" data-doc="<%= recipe._id %>">
+        delete
+      </a>
     </div>
-    <a class="delete" data-doc="<%= recipe._id %>">
-      delete
-    </a>
+    <%- include("./partials/footer.ejs") %>
   </div>
-
-  <%- include("./partials/footer.ejs") %>
 
   <script>
     const trashcan = document.querySelector('a.delete');
