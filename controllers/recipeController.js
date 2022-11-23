@@ -28,10 +28,14 @@ const recipe_create_get = (req, res) => {
     // Ingredients: Matrix with ingredient and quantity columns
 
 
+
+
 const recipe_create_post = (req, res) => {
     const recipeRequest = req.body;
     const recipe = new Recipe({ title: recipeRequest["title"], instructions: recipeRequest["instructions"], ingredients: {} });
-    recipe.ingredients.set(recipeRequest["ingredient-name"], recipeRequest["ingredient-quantity"]);
+    for (let i=0; i<recipeRequest["ingredient-quantity"].length; i++){
+        recipe.ingredients.set(recipeRequest["ingredient-name"][i], recipeRequest["ingredient-quantity"][i]);
+    }
     recipe.save()
         .then(result => {
             res.redirect('/recipes');
