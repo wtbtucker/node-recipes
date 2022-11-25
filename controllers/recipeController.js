@@ -25,10 +25,8 @@ const recipe_create_get = (req, res) => {
     // create form with user data and error message if not valid
     // recipe schema to better reflect the data structure of ingredients (ingredient: units: quantity)
     // Instructions: text area for each step
+    // numbered when displayed on details page
     // Ingredients: Matrix with ingredient and quantity columns
-
-
-
 
 const recipe_create_post = (req, res) => {
     const recipeRequest = req.body;
