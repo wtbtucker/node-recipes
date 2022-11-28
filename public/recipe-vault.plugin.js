@@ -9,12 +9,8 @@ function addIngredient(){
     const ingredientTable = document.querySelector('#ingredient-table');
 
     newIngredientButton.onclick = function() {
-        const ingredientID = 'ingredient-name';
-        const ingredientName = 'ingredient-name';
-        const ingredientField = createTextInput(ingredientID, ingredientName);
-        const quantityID = 'ingredient-quantity';
-        const quantityName = 'ingredient-quantity';
-        const quantityField = createTextInput(quantityID, quantityName);
+        const ingredientField = createTextInput('ingredient-name', 'ingredient-name');
+        const quantityField = createTextInput('ingredient-quantity', 'ingredient-quantity');
         const row = ingredientTable.insertRow(-1);
         const ingredientCell = row.insertCell(0);
         const quantityCell = row.insertCell(1);
