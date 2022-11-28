@@ -9,16 +9,12 @@ function addIngredient(){
     const ingredientTable = document.querySelector('#ingredient-table');
 
     newIngredientButton.onclick = function() {
-        const ingredientField = document.createElement('input');
-        ingredientField.setAttribute('type', 'text');
-        ingredientField.setAttribute('id', 'ingredient-name');
-        ingredientField.setAttribute('name', 'ingredient-name');
-        ingredientField.setAttribute('form', 'create-recipe');
-        const quantityField = document.createElement('input');
-        quantityField.setAttribute('type', 'text');
-        quantityField.setAttribute('id', 'ingredient-quantity');
-        quantityField.setAttribute('name', 'ingredient-quantity');
-        quantityField.setAttribute('form', 'create-recipe');
+        const ingredientID = 'ingredient-name';
+        const ingredientName = 'ingredient-name';
+        const ingredientField = createTextInput(ingredientID, ingredientName);
+        const quantityID = 'ingredient-quantity';
+        const quantityName = 'ingredient-quantity';
+        const quantityField = createTextInput(quantityID, quantityName);
         const row = ingredientTable.insertRow(-1);
         const ingredientCell = row.insertCell(0);
         const quantityCell = row.insertCell(1);
@@ -33,15 +29,21 @@ function addInstruction(){
     const instructionContainer = document.querySelector('#instructions-container');
 
     newInstructionButton.onclick = function() {
-        const instructionField = document.createElement('input');
-        instructionField.setAttribute('type', 'text');
-        instructionField.setAttribute('id', 'instructions');
-        instructionField.setAttribute('name', 'instructions[]');
-        instructionField.setAttribute('form', 'create-recipe');
+        const instructionID = 'instructions';
+        const instructionName = 'instructions[]'
+        const instructionField = createTextInput(instructionID, instructionName);
         instructionContainer.appendChild(instructionField);
     }
 }
 
+function createTextInput(id, name){
+    const textField = document.createElement('input');
+    textField.setAttribute('type', 'text');
+    textField.setAttribute('form', 'create-recipe');
+    textField.setAttribute('id', id);
+    textField.setAttribute('name', name);
+    return textField;
+}
 
 
 // const trashcan = document.querySelector('a.delete');
