@@ -4,22 +4,26 @@
   <%- include("./partials/nav.ejs") %>
 
   <div class="content">
-    <h2><%= recipe.title %></h2>
     <div class="details content">
-      <h3>Ingredients</h3>
-      <table>
+      <h2 class="details title"><%= recipe.title %></h2>
+      <h3 class="details heading">Ingredients</h3>
+      <ul class="details ingredients">
         <% for (let key of recipe.ingredients.keys()) { %>
-          <tr>
-            <td><%= recipe.ingredients.get(key) %></td>
-            <td><%= key %></td>
-          </tr>
+          <li><%= recipe.ingredients.get(key) %> <%= key %>
+          </li>
         <% } %>
-      </table>
-      <h3>Instructions</h3>
-      <p><%= recipe.instructions %></p>
-      <a class="delete" data-doc="<%= recipe._id %>">
+        </ul>
+      <h3 class="details heading">Instructions</h3>
+      <ol class="details instructions">
+        <% for (let step of recipe.instructions) { %>
+          <li>
+            <%= step %>
+          </li>
+        <% } %>
+      </ol>
+      <button class="delete" data-doc="<%= recipe._id %>">
         delete
-      </a>
+      </button>
     </div>
     <%- include("./partials/footer.ejs") %>
   </div>

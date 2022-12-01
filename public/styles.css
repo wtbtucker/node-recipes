@@ -1,5 +1,4 @@
 /* Change top menu to hamburger when under a certain width */
-/* button styling */
 /* box with border for page content eg. recipe form, recipe details, about */
 
 *{
@@ -39,7 +38,7 @@ nav > ul{
     padding: 0px 32px;
 }
 
-li{
+.nav-item{
     margin: 0 10px;
     font-size: 32px;
 }
@@ -69,6 +68,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 8px 10px;
 }
 
 .recipe.content,
@@ -131,4 +131,20 @@ button:hover{
 
 #instructions{
     margin-bottom: 2px;
+}
+
+/* Details */
+h2{
+    font-size: 40px;
+    margin-bottom: 4px;
+}
+
+.details.heading{
+    font-size: 24px;
+    margin-bottom: 2px;
+}
+
+.details.ingredients,
+.details.instructions{
+    padding-left: 16px;
 }
