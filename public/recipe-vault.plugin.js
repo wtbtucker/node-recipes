@@ -11,7 +11,7 @@ function addIngredient(){
     newIngredientButton.onclick = function() {
         const ingredientField = createTextInput('ingredient-name', 'ingredient-name');
         const quantityField = createTextInput('ingredient-quantity', 'ingredient-quantity');
-        const row = ingredientTable.insertRow(-1);
+        const row = ingredientTable.insertRow(ingredientTable.rows.length-1);
         const ingredientCell = row.insertCell(0);
         const quantityCell = row.insertCell(1);
         ingredientCell.appendChild(ingredientField);
@@ -28,7 +28,7 @@ function addInstruction(){
         const instructionID = 'instructions';
         const instructionName = 'instructions[]'
         const instructionField = createTextInput(instructionID, instructionName);
-        instructionContainer.appendChild(instructionField);
+        newInstructionButton.insertAdjacentElement("beforebegin", instructionField);
     }
 }
 

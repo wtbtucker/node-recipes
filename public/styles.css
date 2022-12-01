@@ -1,8 +1,14 @@
 /* Change top menu to hamburger when under a certain width */
-/* format the recipe details page */
+/* button styling */
+/* box with border for page content eg. recipe form, recipe details, about */
 
 *{
     font-family: "Source Sans Pro",sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* Navigation bar */
@@ -24,7 +30,6 @@ nav{
 .site-title > p{
     font-style: italic;
     font-size: 24px;
-    margin-top: -32px;
 }
 
 nav > ul{
@@ -61,6 +66,9 @@ body{
 
 .content{
     height:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .recipe.content,
@@ -72,3 +80,55 @@ body{
     height: 50px;
 }
 
+/* Create Recipe */
+.create-recipe.content{
+    margin: 4px;
+    padding: 4px;
+}
+
+input{
+    font-size: 16px;
+    padding: 6px 12px;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+
+#title-container, #instructions-container{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+.create-recipe-heading{
+    margin-bottom: 4px;
+    font-size: 18px;
+}
+
+#ingredient-table{
+    margin-bottom: 8px;
+}
+
+button{
+    font-size: 16px;
+    padding: 4px 8px;
+    background-color: #7743DB;
+    color: white;
+    font-weight: 400;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+button:hover{
+    background-color: #3B3486;
+}
+
+#new-instruction{
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
+#instructions{
+    margin-bottom: 2px;
+}

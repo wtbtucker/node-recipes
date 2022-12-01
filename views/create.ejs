@@ -4,36 +4,43 @@
   <%- include("./partials/nav.ejs") %>
 
   <div class="create-recipe content">
-    <form action="/recipes" method="POST" id="create-recipe">
-      <label for="title">Recipe title:</label>
-      <input type="text" id="title" name="title" required>
+    <div id="title-container">
+      <h4 class="create-recipe-heading">Title</h4>
+      <input type="text" id="title" name="title" form="create-recipe" placeholder="Enter Title">
+    </div>
 
-      
-      
-      
-      <button>Submit</button>
-    </form>
     <table id="ingredient-table">
       <tr>
-        <th>Ingredient</th>
-        <th>Quantity</th>
+        <th align="left" class="create-recipe-heading">Quantity</th>
+        <th align="left" class="create-recipe-heading">Ingredient</th>
       </tr>
       <tr>
         <td>
-          <input type="text" id="ingredient-name" name="ingredient-name" form="create-recipe">
+          <input type="text" id="ingredient-quantity" name="ingredient-quantity" form="create-recipe" placeholder="Quantity">
         </td>
         <td>
-          <input type="text" id="ingredient-quantity" name="ingredient-quantity" form="create-recipe">
+          <input type="text" id="ingredient-name" name="ingredient-name" form="create-recipe" placeholder="Ingredient">
+        </td>
+      </tr>
+      <tr>
+        <td align="left" colspan="2">
+          <button id="new-ingredient">Add Ingredient</button>
         </td>
       </tr>
     </table>
-    <button id="new-ingredient">+</button>
+
     <div id="instructions-container">
-      <label for="instructions">Instructions:</label>
+      <h4 class="create-recipe-heading">Instructions:</h4>
       <input type="text" id="instructions" name="instructions[]" form="create-recipe" required>
-      <button id="new-instruction">+</button>
+      <button id="new-instruction">Add Step</button>
     </div>
+
+    <form action="/recipes" method="POST" id="create-recipe">
+      <button>Submit</button>
+    </form>
   </div>
+
+  
 
   <%- include("./partials/footer.ejs") %>
 </body>
