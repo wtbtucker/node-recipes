@@ -1,5 +1,8 @@
 // TODO
 // form vaildation
+// user login/authentication
+// delete posts and edit posts if user is recipe creator
+// print friendly formatting
 
 const express = require('express');
 const morgan = require('morgan');
@@ -34,7 +37,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-    res.render('about', { title: 'About'});
+    res.render('about', { title: 'About' });
+});
+
+app.get('/login', (req, res) => {
+    res.render('login', {title: 'Login' });
 });
 
 // recipe routes
@@ -43,4 +50,4 @@ app.use('/recipes', recipeRoutes);
 // 404 page
 app.use((req, res) => {
     res.status(404).render('404', { title: '404' })
-})
+});

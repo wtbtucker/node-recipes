@@ -6,7 +6,7 @@ const recipe_index = (req, res) => {
             res.render('index', { recipes: result, title: 'All recipes' });
         })
         .catch(err => console.log(err));
-}
+};
 
 const recipe_details = (req, res) => {
     const id = req.params.id;
@@ -15,18 +15,11 @@ const recipe_details = (req, res) => {
             res.render('details', { recipe: result, title: 'Recipe Details' });
         })
         .catch(err => console.log(err));
-}
+};
 
 const recipe_create_get = (req, res) => {
     res.render('create', { title: 'Create new recipe' })
-}
-
-// change new recipe form to fit model structure
-    // create form with user data and error message if not valid
-    // recipe schema to better reflect the data structure of ingredients (ingredient: units: quantity)
-    // Instructions: text area for each step
-    // numbered when displayed on details page
-    // Ingredients: Matrix with ingredient and quantity columns
+};
 
 const recipe_create_post = (req, res) => {
     const recipeRequest = req.body;
@@ -39,7 +32,7 @@ const recipe_create_post = (req, res) => {
             res.redirect('/recipes');
         })
         .catch(err => console.log(err));
-}
+};
 
 const recipe_delete = (req, res) => {
     const id = req.params.id;
@@ -48,7 +41,7 @@ const recipe_delete = (req, res) => {
             res.json({ redirect: '/recipes' });
         })
         .catch(err => console.log(err));
-}
+};
 
 module.exports = {
     recipe_index,
