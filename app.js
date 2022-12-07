@@ -8,12 +8,13 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const recipeRoutes = require('./routes/recipeRoutes');
+const User = require('./models/user');
 
 // express app
 const app = express();
 
 // connect to mongodb then listen for requests
-const dbURI = 'mongodb+srv://wtbtucker2:jw3kUw3cHbKkPsKP@cluster0.iplljni.mongodb.net/Recipes?retryWrites=true&w=majority'
+const dbURI = 'mongodb+srv://wtbtucker2:jw3kUw3cHbKkPsKP@cluster0.iplljni.mongodb.net/Recipes?retryWrites=true&w=majority';
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => app.listen(3000))
@@ -42,6 +43,19 @@ app.get('/about', (req, res) => {
 
 app.get('/login', (req, res) => {
     res.render('login', {title: 'Login' });
+});
+
+app.post('/login', (req, res) => {
+    const userRequest = req.body;
+    
+    User.findOne({ username: userRequest.username }, function(err, user) {
+        if (err) throw err;
+        user.comparePassword(userRequest.password, function(err, isMatch) {
+            if (err) throw err;
+            console.log(user.createdAt);
+            console.log(userRequest.password, isMatch);
+        });
+    });
 });
 
 // recipe routes
