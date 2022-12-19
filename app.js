@@ -1,5 +1,5 @@
 // TODO
-// form vaildation
+// form validation
 // user login/authentication
 // delete posts and edit posts if user is recipe creator
 // print friendly formatting
@@ -46,17 +46,53 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    const userRequest = req.body;
+    const loginRequest = req.body;
     
-    User.findOne({ username: userRequest.username }, function(err, user) {
+    User.findOne({ username: loginRequest.username }, function(err, user) {
         if (err) throw err;
-        user.comparePassword(userRequest.password, function(err, isMatch) {
+        user.comparePassword(loginRequest.password, function(err, isMatch) {
             if (err) throw err;
             console.log(user.createdAt);
-            console.log(userRequest.password, isMatch);
+            console.log(loginRequest.password, isMatch);
         });
     });
 });
+
+app.get('/register', (req, res) => {
+    res.render('register', {title: 'Register'})
+})
+
+app.post('/register', (req,res) => {
+    const registerRequest = req.body;
+
+    // if (registerRequest['password'] == registerRequest['confirm']) {
+    const user = new User({ username: registerRequest['username'], email: registerRequest['email'], password: registerRequest['password'] })
+
+    user.save()
+        .then(result => {
+            res.redirect('/recipes');
+        })
+        .catch(err => {
+            console.log(err);
+            let errorCode = err.keyValue;
+            let errorKey = Object.keys(errorCode)[0];
+            switch (errorKey) {
+                case 'email':
+                    console.log(errorCode['email']);
+                    res.render('404', {title: 'duplicate email'});
+                    break;
+                case 'username':
+                    console.log(errorCode['username']);
+                    res.render('404', {title: 'duplicate username'});
+                    break;
+                default:
+                    res.render('404', { title: 'invalid entry'});
+            }          
+        });
+    // } else {
+    //     // enter user data for username and password and prompt to select a password that matches
+    //     res.render()
+    });
 
 // recipe routes
 app.use('/recipes', recipeRoutes);
