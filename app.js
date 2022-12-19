@@ -79,14 +79,14 @@ app.post('/register', (req,res) => {
             switch (errorKey) {
                 case 'email':
                     console.log(errorCode['email']);
-                    res.render('404', {title: 'duplicate email'});
+                    res.render('404', {title: 'duplicate email', error: 'Email must be unique'});
                     break;
                 case 'username':
                     console.log(errorCode['username']);
-                    res.render('404', {title: 'duplicate username'});
+                    res.render('404', {title: 'duplicate username', error: 'Username must be unique'});
                     break;
                 default:
-                    res.render('404', { title: 'invalid entry'});
+                    res.render('404', { title: 'invalid entry', error: 'Invalid entry'});
             }          
         });
     // } else {
