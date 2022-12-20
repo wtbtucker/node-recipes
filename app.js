@@ -78,13 +78,10 @@ app.post('/register', (req,res) => {
             let errorKey = Object.keys(errorCode)[0];
             switch (errorKey) {
                 case 'email':
-                    console.log(errorCode['email']);
-                    // display an error message somewhere on the page, prefill username
                     res.render('register', {title: 'Register', errorMessage: `${errorCode['email']} is already taken. Please enter a unique email`});
                     break;
                 case 'username':
-                    console.log(errorCode['username']);
-                    res.render('404', {title: 'duplicate username', error: 'Username must be unique'});
+                    res.render('register', {title: 'Register', errorMessage: `${errorCode['username']} is already taken. Please enter a unique username`});
                     break;
                 default:
                     res.render('404', { title: 'invalid entry', error: 'Invalid entry'});
