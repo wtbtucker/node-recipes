@@ -59,7 +59,7 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-    res.render('register', {title: 'Register'})
+    res.render('register', {title: 'Register', errorMessage: ''})
 })
 
 app.post('/register', (req,res) => {
@@ -79,7 +79,8 @@ app.post('/register', (req,res) => {
             switch (errorKey) {
                 case 'email':
                     console.log(errorCode['email']);
-                    res.render('404', {title: 'duplicate email', error: 'Email must be unique'});
+                    // display an error message somewhere on the page, prefill username
+                    res.render('register', {title: 'Register', errorMessage: `${errorCode['email']} is already taken. Please enter a unique email`});
                     break;
                 case 'username':
                     console.log(errorCode['username']);
@@ -89,9 +90,6 @@ app.post('/register', (req,res) => {
                     res.render('404', { title: 'invalid entry', error: 'Invalid entry'});
             }          
         });
-    // } else {
-    //     // enter user data for username and password and prompt to select a password that matches
-    //     res.render()
     });
 
 // recipe routes

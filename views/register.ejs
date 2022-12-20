@@ -23,9 +23,14 @@
                 Confirm Password
             </label>
             <input type="password" name="confirm" placeholder="Confirm Password" id="confirm" required>
-            <input type="submit" value="Login">
+            <input type="submit" value="Register">
         </form>
     </div>
+    <% if (errorMessage) { %>
+      <div class="error-container">
+        <%- errorMessage %>
+      </div>
+    <% } %>
     </div>
     <%- include("./partials/footer.ejs") %>
   </div>
