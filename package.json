@@ -19,6 +19,7 @@
     "homepage": "https://github.com/wtbtucker/node-recipes#readme",
     "dependencies": {
         "bcrypt": "^5.1.0",
+        "cookie-parser": "^1.4.6",
         "ejs": "^3.1.2",
         "express": "^4.17.1",
         "express-session": "^1.17.3",
