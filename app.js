@@ -99,5 +99,5 @@ app.use('/recipes', recipeRoutes);
 
 // 404 page
 app.use((req, res) => {
-    res.status(404).render('404', { title: '404' })
+    res.status(404).render('404', { title: '404', error: '404 Page not found' })
 });
