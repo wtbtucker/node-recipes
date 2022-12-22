@@ -59,10 +59,12 @@ app.get('/about', (req, res) => {
     res.render('about', { title: 'About' });
 });
 
+// Load login form
 app.get('/login', (req, res) => {
     res.render('login', {title: 'Login' });
 });
 
+// Verify user credentials and create session
 app.post('/login', (req, res) => {
     const loginRequest = req.body;
     
@@ -82,10 +84,17 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/')
+});
+
+// Load registration form
 app.get('/register', (req, res) => {
     res.render('register', {title: 'Register', errorMessage: ''})
 })
 
+// Register a new user
 app.post('/register', (req,res) => {
     const registerRequest = req.body;
     const user = new User({ username: registerRequest['username'], email: registerRequest['email'], password: registerRequest['password'] })
@@ -110,6 +119,7 @@ app.post('/register', (req,res) => {
             }          
         });
     });
+
 
 // recipe routes
 app.use('/recipes', recipeRoutes);
