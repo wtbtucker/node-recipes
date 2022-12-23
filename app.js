@@ -4,11 +4,14 @@
 // delete posts and edit posts if user is recipe creator
 // print friendly formatting
 
+// if user is logged in display 'signed in as david' and logout button in nav
+// if user is not logged in display login and register buttons in nav
+
 const express = require('express'),
     morgan = require('morgan'),
     mongoose = require('mongoose'),
     sessions = require('express-session'),
-    cookieParser = require('cookie-parser'),
+    MongoStore = require('connect-mongo'),
     recipeRoutes = require('./routes/recipeRoutes'),
     User = require('./models/user');
 
@@ -17,9 +20,13 @@ const app = express();
 
 // connect to mongodb then listen for requests
 const dbURI = 'mongodb+srv://wtbtucker2:jw3kUw3cHbKkPsKP@cluster0.iplljni.mongodb.net/Recipes?retryWrites=true&w=majority';
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(result => app.listen(3000))
-    .catch(err => console.log(err));
+const clientP = mongoose.connect(dbURI, 
+    { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(m => m.connection.getClient())
+
+app.listen(3000, () => {
+    console.log('Recipes app listening at http://localhost:3000');
+})
 
 // register view engine
 app.set('view engine', 'ejs');
@@ -36,10 +43,12 @@ const oneDay = 1000*60*60*24 // One day in milliseconds
 app.use(sessions({
     secret: "thisismysecretkey123456789",
     saveUninitialized: true,
+    store: MongoStore.create({
+        clientPromise: clientP,
+    }),
     cookie: { maxAge: oneDay },
     resave: false
 }));
-app.use(cookieParser());
 
 // a variable to save a session
 let session;
@@ -49,6 +58,7 @@ app.get('/', (req, res) => {
     session=req.session;
     if(session.userid){
         console.log(req.session)
+        console.log(req.isAuthenticated)
         res.redirect('/recipes');
     }else {
         res.redirect('/login');
