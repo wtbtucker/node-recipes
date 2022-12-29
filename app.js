@@ -4,8 +4,10 @@
 // delete posts and edit posts if user is recipe creator
 // print friendly formatting
 
-// if user is logged in display 'signed in as david' and logout button in nav
+// if req.session.userid is logged in display 'signed in as david' and logout button in nav
 // if user is not logged in display login and register buttons in nav
+
+
 
 const express = require('express'),
     morgan = require('morgan'),
@@ -47,7 +49,7 @@ app.use(sessions({
         clientPromise: clientP,
     }),
     cookie: { maxAge: oneDay },
-    resave: false
+    resave: true
 }));
 
 // a variable to save a session
@@ -114,19 +116,46 @@ app.post('/register', (req,res) => {
         })
         .catch(err => {
             console.log(err);
-            let errorCode = err.keyValue;
-            let errorKey = Object.keys(errorCode)[0];
-            // handle non-unique email and username errors
-            switch (errorKey) {
-                case 'email':
-                    res.render('register', {title: 'Register', errorMessage: `${errorCode['email']} is already taken. Please enter a unique email`});
-                    break;
-                case 'username':
-                    res.render('register', {title: 'Register', errorMessage: `${errorCode['username']} is already taken. Please enter a unique username`});
+            switch (err.name){
+                case 'ValidationError':
+                    // Use error message to differentiate which form field was invalid
+                    // format 'User validation failed: {field}: is invalid'
+                    let message = err.message;
+                    let error_field = message.split(": ")[1];
+                    switch (error_field){
+                        case 'email':
+                            res.render('register', {title: 'Register', errorMessage: `Invalid email`});
+                            break;
+                        case 'username':
+                            res.render('register', {title: 'Register', errorMessage: `Invalid username`});
+                            break;
+                        default:
+                            res.render('register', {title: 'Register', errorMessage: `Invalid entry. Unknown field`});
+                    }
+                    break;                    
+                    
+                case 'MongoError':
+                    let errorCode = err.keyValue;
+                    let errorKey = Object.keys(errorCode)[0];
+                    switch (errorKey) {
+                        case 'email':
+                            res.render('register', {title: 'Register', errorMessage: `${errorCode['email']} is already taken. Please enter a unique email`});
+                            break;
+                        case 'username':
+                            res.render('register', {title: 'Register', errorMessage: `${errorCode['username']} is already taken. Please enter a unique username`});
+                            break;
+                        default:
+                            res.render('register', { title: 'Register', error: 'MongoError unknown errorKey'});
+                    }
                     break;
                 default:
-                    res.render('404', { title: 'invalid entry', error: 'Invalid entry'});
-            }          
+                    res.render('404', { title: 'invalid entry', error: 'registration error unknown'});
+            }
+              
+            
+
+            // handle non-unique email and username errors
+                  
         });
     });
 
