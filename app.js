@@ -4,8 +4,12 @@
 // delete posts and edit posts if user is recipe creator
 // print friendly formatting
 
+// error message on login screen
+
+// use context sent with response to determine if user is logged in
 // if user is logged in display 'signed in as david' and logout button in nav
 // if user is not logged in display login and register buttons in nav
+
 
 const express = require('express'),
     morgan = require('morgan'),
@@ -50,19 +54,22 @@ app.use(sessions({
     resave: false
 }));
 
-// a variable to save a session
-let session;
+// middleware to test if authenticated
+const requireAuth = (req, res, next) => {
+    if (req.session.userid){
+        console.log(req.session)
+        res.locals.user = req.session.userid;
+        next()
+    } else {
+        res.locals.user = null;
+        next()
+    }
+}
 
 // routes
+app.get('*', requireAuth);
 app.get('/', (req, res) => {
-    session=req.session;
-    if(session.userid){
-        console.log(req.session)
-        console.log(req.isAuthenticated)
-        res.redirect('/recipes');
-    }else {
-        res.redirect('/login');
-    }
+    res.redirect('/recipes');
 });
 
 app.get('/about', (req, res) => {
@@ -80,23 +87,51 @@ app.post('/login', (req, res) => {
     
     User.findOne({ username: loginRequest.username }, function(err, user) {
         if (err) throw err;
-        user.comparePassword(loginRequest.password, function(err, isMatch) {
-            if (err) throw err;
-            if (isMatch){
-                session = req.session;
-                session.userid = loginRequest.username;
-                console.log(req.session);
-                res.redirect('/recipes');
-            }else {
-                res.redirect('/404', {title: 'Error', error: 'Invalid username or password'})
-            }
-        });
+        if (user) {
+            user.comparePassword(loginRequest.password, function(err, isMatch) {
+                if (err) throw err;
+                if (isMatch){
+
+                    // regenerate session to guard against session fixation
+                    req.session.regenerate((err) => {
+                        if (err) next(err)
+                    });
+
+                    // store user information in session
+                    req.session.userid = loginRequest.username;
+                    console.log(req.session);
+
+                    // explicitly save session to prevent redirect before save
+                    req.session.save((err) => {
+                        if(err) next(err)
+                    });
+                    res.redirect('/recipes');
+                }else {
+                    res.render('login', {title: 'Invalid Password'})
+                }
+            });
+        } else {
+            res.render('login', {title: 'Invalid Username'})
+        }
     });
 });
 
 app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/')
+    
+    // clear user from session object and save
+    // ensures re-using session id will not have logged in user
+    req.session.user = null;
+    req.session.save((err) => {
+        if (err) {
+            next(err)
+        }
+        req.session.regenerate((err) => {
+            if (err) {
+                next(err)
+            }
+            res.redirect('/')
+        });
+    });
 });
 
 // Load registration form
@@ -110,7 +145,7 @@ app.post('/register', (req,res) => {
     const user = new User({ username: registerRequest['username'], email: registerRequest['email'], password: registerRequest['password'] })
     user.save()
         .then(result => {
-            res.redirect('/recipes');
+            res.redirect('/login');
         })
         .catch(err => {
             console.log(err);
