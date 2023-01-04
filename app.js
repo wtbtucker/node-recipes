@@ -54,8 +54,8 @@ app.use(sessions({
     resave: false
 }));
 
-// middleware to test if authenticated
-const requireAuth = (req, res, next) => {
+// middleware to check for user and set response variables to include user
+const checkUser = (req, res, next) => {
     if (req.session.userid){
         console.log(req.session)
         res.locals.user = req.session.userid;
@@ -66,9 +66,17 @@ const requireAuth = (req, res, next) => {
     }
 }
 
+const requireAuth = (req, res, next) => {
+    if(req.session.userid) {
+        next()
+    } else {
+        res.redirect('/login')
+    }
+}
+
 // routes
-app.get('*', requireAuth);
-app.get('/', (req, res) => {
+app.get('*', checkUser);
+app.get('/', requireAuth, (req, res) => {
     res.redirect('/recipes');
 });
 
@@ -167,7 +175,7 @@ app.post('/register', (req,res) => {
 
 
 // recipe routes
-app.use('/recipes', recipeRoutes);
+app.use('/recipes', requireAuth, recipeRoutes);
 
 // 404 page
 app.use((req, res) => {
