@@ -4,10 +4,15 @@
       <p>No fluff just recipes</p>
     </div>
     <ul>
-      <li class="nav-item"><a href="/">Recipes</a></li>
-      <li class="nav-item"><a href="/about">About</a></li>
-      <li class="nav-item"><a href="/login">Login</a></li>
-      <li class="nav-item"><a href="/register">Register</a></li>
-      <li class="nav-item"><a href="/recipes/create">New Recipe</a></li>
+      <% if (user) { %>
+        <li class="nav-item"><a href="/">Recipes</a></li>
+        <li class="nav-item"><a href="/recipes/create">New Recipe</a></li>
+        <li class="nav-item">Welcome, <%= user %></li>
+        <li class="nav-item"><a href="/logout">Logout</a></li>
+      <% } else { %>
+        <li class="nav-item"><a href="/about">About</a></li>
+        <li class="nav-item"><a href="/login">Login</a></li>
+        <li class="nav-item"><a href="/register">Register</a></li>
+      <% } %>
     </ul>
   </nav>

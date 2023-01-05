@@ -1,16 +1,3 @@
-// TODO
-// form validation
-// user login/authentication
-// delete posts and edit posts if user is recipe creator
-// print friendly formatting
-
-// error message on login screen
-
-// use context sent with response to determine if user is logged in
-// if user is logged in display 'signed in as david' and logout button in nav
-// if user is not logged in display login and register buttons in nav
-
-
 const express = require('express'),
     morgan = require('morgan'),
     mongoose = require('mongoose'),
@@ -99,21 +86,12 @@ app.post('/login', (req, res) => {
             user.comparePassword(loginRequest.password, function(err, isMatch) {
                 if (err) throw err;
                 if (isMatch){
-
-                    // regenerate session to guard against session fixation
-                    req.session.regenerate((err) => {
-                        if (err) next(err)
-                    });
-
+                    
                     // store user information in session
                     req.session.userid = loginRequest.username;
                     console.log(req.session);
 
-                    // explicitly save session to prevent redirect before save
-                    req.session.save((err) => {
-                        if(err) next(err)
-                    });
-                    res.redirect('/recipes');
+                    res.redirect('/');
                 }else {
                     res.render('login', {title: 'Invalid Password'})
                 }
