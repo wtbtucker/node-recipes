@@ -20,12 +20,10 @@ const user_login_post = (req, res) => {
 
                     res.redirect('../');
                 }else {
-                    res.locals.user = null;
                     res.render('login', {title: 'Login', errorMessage: 'Invalid Password' })
                 }
             });
         } else {
-            res.locals.user = null;
             res.render('login', {title: 'Login', errorMessage: 'Invalid Username' })
         }
     });

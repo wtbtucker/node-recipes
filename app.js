@@ -54,6 +54,8 @@ const checkUser = (req, res, next) => {
     }
 }
 
+app.use(checkUser);
+
 const requireAuth = (req, res, next) => {
     if(req.session.userid) {
         next()
@@ -63,7 +65,6 @@ const requireAuth = (req, res, next) => {
 }
 
 // routes
-app.get('*', checkUser);
 app.get('/', requireAuth, (req, res) => {
     res.redirect('/recipes');
 });
