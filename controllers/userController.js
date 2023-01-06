@@ -1,7 +1,7 @@
 const User = require('../models/user');
 
 const user_login_get = (req, res) => {
-    res.render('login', {title: 'Login' });
+    res.render('login', {title: 'Login', errorMessage: '' });
 };
 
 const user_login_post = (req, res) => {
@@ -20,11 +20,13 @@ const user_login_post = (req, res) => {
 
                     res.redirect('../');
                 }else {
-                    res.render('login', {title: 'Invalid Password'})
+                    res.locals.user = null;
+                    res.render('login', {title: 'Login', errorMessage: 'Invalid Password' })
                 }
             });
         } else {
-            res.render('login', {title: 'Invalid Username'})
+            res.locals.user = null;
+            res.render('login', {title: 'Login', errorMessage: 'Invalid Username' })
         }
     });
 };

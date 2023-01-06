@@ -18,6 +18,11 @@
             <input type="submit" value="Login">
         </form>
     </div>
+    <% if (errorMessage) { %>
+      <div class="error-container">
+        <%- errorMessage %>
+      </div>
+    <% } %>
     </div>
     <%- include("./partials/footer.ejs") %>
   </div>
