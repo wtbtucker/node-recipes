@@ -4,10 +4,25 @@ const mongoose = require('mongoose'),
 const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema({
-    username: {type: String, lowercase: [true, 'lowercase only'], required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: {unique: true}},
-    email: {type: String, lowercase: [true, 'lowercase only'], required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: {unique: true}},
+    username: {
+        type: String, 
+        lowercase: [true, 'lowercase only'], 
+        required: [true, "can't be blank"], 
+        match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
+        index: {unique: true}
+    },
+    email: {
+        type: String, 
+        lowercase: [true, 'lowercase only'], 
+        required: [true, "can't be blank"], 
+        match: [/\S+@\S+\.\S+/, 'is invalid'], 
+        index: {unique: true}
+    },
     bio: String,
-    password: {type: String, required: true}
+    password: {
+        type: String, 
+        required: true
+    }
 }, { timestamps: true });
 
 

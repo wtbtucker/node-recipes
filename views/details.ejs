@@ -21,9 +21,15 @@
           </li>
         <% } %>
       </ol>
-      <button class="delete" data-doc="<%= recipe._id %>">
-        delete
-      </button>
+      <% if (user) { %>
+        <button class="delete" data-doc="<%= recipe._id %>">
+          delete
+        </button>
+        <button class="edit" data-doc="<%= recipe._id %>">
+          edit
+        </button>
+      <% } %>
+
     </div>
     <%- include("./partials/footer.ejs") %>
   </div>

@@ -40,7 +40,11 @@ nav > ul{
 
 .nav-item{
     margin: 0 10px;
-    font-size: 32px;
+    font-size: 24px;
+}
+
+.nav-item.welcome{
+    font-style: italic;
 }
 
 /* Links */

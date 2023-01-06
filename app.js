@@ -1,20 +1,10 @@
-// TODO
-// form validation
-// user login/authentication
-// delete posts and edit posts if user is recipe creator
-// print friendly formatting
-
-// if req.session.userid is logged in display 'signed in as david' and logout button in nav
-// if user is not logged in display login and register buttons in nav
-
-
-
 const express = require('express'),
     morgan = require('morgan'),
     mongoose = require('mongoose'),
     sessions = require('express-session'),
     MongoStore = require('connect-mongo'),
     recipeRoutes = require('./routes/recipeRoutes'),
+    userRoutes = require('./routes/userRoutes'),
     User = require('./models/user');
 
 // express app
@@ -49,119 +39,44 @@ app.use(sessions({
         clientPromise: clientP,
     }),
     cookie: { maxAge: oneDay },
-    resave: true
+    resave: false
 }));
 
-// a variable to save a session
-let session;
+// middleware to check for user and set response variables to include user
+const checkUser = (req, res, next) => {
+    if (req.session.userid){
+        console.log(req.session)
+        res.locals.user = req.session.userid;
+        next()
+    } else {
+        res.locals.user = null;
+        next()
+    }
+}
+
+const requireAuth = (req, res, next) => {
+    if(req.session.userid) {
+        next()
+    } else {
+        res.redirect('/user/login')
+    }
+}
 
 // routes
-app.get('/', (req, res) => {
-    session=req.session;
-    if(session.userid){
-        console.log(req.session)
-        console.log(req.isAuthenticated)
-        res.redirect('/recipes');
-    }else {
-        res.redirect('/login');
-    }
+app.get('*', checkUser);
+app.get('/', requireAuth, (req, res) => {
+    res.redirect('/recipes');
 });
 
 app.get('/about', (req, res) => {
     res.render('about', { title: 'About' });
 });
 
-// Load login form
-app.get('/login', (req, res) => {
-    res.render('login', {title: 'Login' });
-});
-
-// Verify user credentials and create session
-app.post('/login', (req, res) => {
-    const loginRequest = req.body;
-    
-    User.findOne({ username: loginRequest.username }, function(err, user) {
-        if (err) throw err;
-        user.comparePassword(loginRequest.password, function(err, isMatch) {
-            if (err) throw err;
-            if (isMatch){
-                session = req.session;
-                session.userid = loginRequest.username;
-                console.log(req.session);
-                res.redirect('/recipes');
-            }else {
-                res.redirect('/404', {title: 'Error', error: 'Invalid username or password'})
-            }
-        });
-    });
-});
-
-app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/')
-});
-
-// Load registration form
-app.get('/register', (req, res) => {
-    res.render('register', {title: 'Register', errorMessage: ''})
-})
-
-// Register a new user
-app.post('/register', (req,res) => {
-    const registerRequest = req.body;
-    const user = new User({ username: registerRequest['username'], email: registerRequest['email'], password: registerRequest['password'] })
-    user.save()
-        .then(result => {
-            res.redirect('/recipes');
-        })
-        .catch(err => {
-            console.log(err);
-            switch (err.name){
-                case 'ValidationError':
-                    // Use error message to differentiate which form field was invalid
-                    // format 'User validation failed: {field}: is invalid'
-                    let message = err.message;
-                    let error_field = message.split(": ")[1];
-                    switch (error_field){
-                        case 'email':
-                            res.render('register', {title: 'Register', errorMessage: `Invalid email`});
-                            break;
-                        case 'username':
-                            res.render('register', {title: 'Register', errorMessage: `Invalid username`});
-                            break;
-                        default:
-                            res.render('register', {title: 'Register', errorMessage: `Invalid entry. Unknown field`});
-                    }
-                    break;                    
-                    
-                case 'MongoError':
-                    let errorCode = err.keyValue;
-                    let errorKey = Object.keys(errorCode)[0];
-                    switch (errorKey) {
-                        case 'email':
-                            res.render('register', {title: 'Register', errorMessage: `${errorCode['email']} is already taken. Please enter a unique email`});
-                            break;
-                        case 'username':
-                            res.render('register', {title: 'Register', errorMessage: `${errorCode['username']} is already taken. Please enter a unique username`});
-                            break;
-                        default:
-                            res.render('register', { title: 'Register', error: 'MongoError unknown errorKey'});
-                    }
-                    break;
-                default:
-                    res.render('404', { title: 'invalid entry', error: 'registration error unknown'});
-            }
-              
-            
-
-            // handle non-unique email and username errors
-                  
-        });
-    });
-
-
 // recipe routes
-app.use('/recipes', recipeRoutes);
+app.use('/recipes', requireAuth, recipeRoutes);
+
+// user routes
+app.use('/user', userRoutes);
 
 // 404 page
 app.use((req, res) => {
