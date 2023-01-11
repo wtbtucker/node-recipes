@@ -3,35 +3,34 @@
 <body>
   <%- include("./partials/nav.ejs") %>
   <div class="content">
-    <div class="recipe content">
-      <div class="register-container">
-        <h1>Register</h1>
-        <form action="/user/register" method="post">
-            <label for="username">
-                Username
-            </label>
-            <input type="text" name="username" placeholder="Enter Username" id="username" required>
-            <label for="email">
-                Email
-            </label>
-            <input type="text" name="email" placeholder="Enter Email Address" id="email" required>
-            <label for="password">
-                Password
-            </label>
-            <input type="password" name="password" placeholder="Enter Password" id="password" required>
-            <label for="confirm">
-                Confirm Password
-            </label>
-            <input type="password" name="confirm" placeholder="Confirm Password" id="confirm" required>
-            <input type="submit" value="Register">
-        </form>
-    </div>
-    <% if (errorMessage) { %>
-      <div class="error-container">
-        <%- errorMessage %>
+    <form class="form" action="/user/register" method="post">
+      <h1 class="form-title">Register</h1>
+        <label for="username">
+            Username
+        </label>
+        <input type="text" name="username" placeholder="Enter Username" id="username" required>
+        <label for="email">
+            Email
+        </label>
+        <input type="text" name="email" placeholder="Enter Email Address" id="email" required>
+        <label for="password">
+            Password
+        </label>
+        <input type="password" name="password" placeholder="Enter Password" id="password" required>
+        <label for="confirm">
+            Confirm Password
+        </label>
+        <input type="password" name="confirm" placeholder="Re-enter Password" id="confirm" required>
+        <input class="submit" type="submit" value="Register">
+        <div class="form redirect">
+        <p>Already have an account? <a href="/user/login" style="font-size: 20px;">Log In</a></p>
       </div>
-    <% } %>
-    </div>
+    </form>
+      <% if (errorMessage) { %>
+        <div class="error-container">
+          <%- errorMessage %>
+        </div>
+      <% } %>
     <%- include("./partials/footer.ejs") %>
   </div>
 </body>

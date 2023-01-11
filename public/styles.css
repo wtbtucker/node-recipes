@@ -114,7 +114,8 @@ input{
     margin-bottom: 8px;
 }
 
-button{
+button,
+.submit{
     font-size: 16px;
     padding: 4px 8px;
     background-color: #7743DB;
@@ -124,7 +125,8 @@ button{
     border-radius: 4px;
 }
 
-button:hover{
+button:hover,
+.submit:hover{
     background-color: #3B3486;
 }
 
@@ -151,4 +153,21 @@ h2{
 .details.ingredients,
 .details.instructions{
     padding-left: 16px;
+}
+
+/* Login */
+.form{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+}
+
+.form-title{
+    align-self: center;
+    margin-bottom: 12px;
+}
+
+.form>input{
+    margin: 6px 2px;
 }

@@ -42,7 +42,7 @@ app.use(sessions({
     resave: false
 }));
 
-// middleware to check for user and set response variables to include user
+// middleware to check request for user and set response variables to include user
 const checkUser = (req, res, next) => {
     if (req.session.userid){
         console.log(req.session)
