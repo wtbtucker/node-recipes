@@ -40,11 +40,16 @@ const recipe_create_post = (req, res) => {
 };
 
 
+// Find recipe using the id from the request parameters and delete it
+// Check that user is the same as the user that created the recipe
 const recipe_delete = (req, res) => {
     const id = req.params.id;
-    Blog.findByIdAndDelete(id)
+    Recipe.findById(id, 'creator', function(err, creator) {
+        if (creator !== req.session.userid) return res.redirect('/recipes')
+    });
+    Recipe.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/recipes' });
+            res.redirect('/recipes');
         })
         .catch(err => console.log(err));
 };
