@@ -8,6 +8,7 @@ const recipe_index = (req, res) => {
         .catch(err => console.log(err));
 };
 
+
 const recipe_details = (req, res) => {
     const id = req.params.id;
     Recipe.findById(id)
@@ -17,13 +18,17 @@ const recipe_details = (req, res) => {
         .catch(err => console.log(err));
 };
 
+
 const recipe_create_get = (req, res) => {
     res.render('create', { title: 'Create new recipe' })
 };
 
+
 const recipe_create_post = (req, res) => {
     const recipeRequest = req.body;
-    const recipe = new Recipe({ title: recipeRequest["title"], instructions: recipeRequest["instructions"], ingredients: {} });
+
+    // Set the creator field to the username of the user making the request
+    const recipe = new Recipe({ title: recipeRequest["title"], instructions: recipeRequest["instructions"], ingredients: {}, creator: req.session.userid });
     for (let i=0; i<recipeRequest["ingredient-quantity"].length; i++){
         recipe.ingredients.set(recipeRequest["ingredient-name"][i], recipeRequest["ingredient-quantity"][i]);
     }
@@ -33,6 +38,7 @@ const recipe_create_post = (req, res) => {
         })
         .catch(err => console.log(err));
 };
+
 
 const recipe_delete = (req, res) => {
     const id = req.params.id;

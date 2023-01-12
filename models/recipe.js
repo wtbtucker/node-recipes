@@ -14,6 +14,10 @@ const recipeSchema = new Schema({
     instructions: {
         type: [String],
         required: true
+    },
+    creator: {
+        type: String,
+        required: false
     }
 }, { timestamps: true });
 

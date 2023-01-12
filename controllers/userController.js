@@ -29,9 +29,9 @@ const user_login_post = (req, res) => {
     });
 };
 
+// clear user from session object and save
+// ensures re-using session id will not have logged in user
 const user_logout = (req, res) => {
-    // clear user from session object and save
-    // ensures re-using session id will not have logged in user
     req.session.user = null;
     req.session.save((err) => {
         if (err) {
