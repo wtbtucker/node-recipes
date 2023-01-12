@@ -21,7 +21,7 @@
           </li>
         <% } %>
       </ol>
-      <% if (user) { %>
+      <% if (recipe.creator == user) { %>
         <button class="delete" data-doc="<%= recipe._id %>">
           delete
         </button>
