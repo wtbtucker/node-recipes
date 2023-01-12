@@ -52,6 +52,10 @@ const user_register_get = (req, res) => {
 
 const user_register_post = (req, res) => {
     const registerRequest = req.body;
+    // Catch password not matching confirm password
+    if (registerRequest['password'] !== registerRequest['confirm']){
+         return res.render('register', {title: 'Register', errorMessage: `Passwords do not match`});
+    }
     const user = new User({ username: registerRequest['username'], email: registerRequest['email'], password: registerRequest['password'] })
     user.save()
         .then(result => {
@@ -59,19 +63,46 @@ const user_register_post = (req, res) => {
         })
         .catch(err => {
             console.log(err);
-            let errorCode = err.keyValue;
-            let errorKey = Object.keys(errorCode)[0];
-            // handle non-unique email and username errors
-            switch (errorKey) {
-                case 'email':
-                    res.render('register', {title: 'Register', errorMessage: `${errorCode['email']} is already taken. Please enter a unique email`});
+            // Catch password not matching confirm password
+            if (registerRequest['password'] !== registerRequest['confirm']){
+                res.render('register', {title: 'Register', errorMessage: `Passwords do not match`});
+            }
+
+            switch (err.name){
+                // Use error message to differentiate which form field was invalid
+                // format 'User validation failed: {field}: is invalid'
+                case 'ValidationError':
+                    let message = err.message;
+                    let error_field = message.split(": ")[1];
+                    switch (error_field){
+                        case 'email':
+                            res.render('register', {title: 'Register', errorMessage: `Invalid email`});
+                            break;
+                        case 'username':
+                            res.render('register', {title: 'Register', errorMessage: `Invalid username`});
+                            break;
+                        default:
+                            res.render('register', {title: 'Register', errorMessage: `Invalid entry. Unknown field`});
+                    }
                     break;
-                case 'username':
-                    res.render('register', {title: 'Register', errorMessage: `${errorCode['username']} is already taken. Please enter a unique username`});
+
+                // Attempting to use a non-unique email or username will throw a MongoError
+                // Use keyValue to determine the field that caused the error
+                case 'MongoError':
+                    let errorCode = err.keyValue;
+                    let errorKey = Object.keys(errorCode)[0];
+                    switch (errorKey) {
+                        case 'email':
+                            res.render('register', {title: 'Register', errorMessage: `${errorCode['email']} is already taken. Please enter a unique email`});
+                            break;
+                        case 'username':
+                            res.render('register', {title: 'Register', errorMessage: `${errorCode['username']} is already taken. Please enter a unique username`});
+                            break;
+                    }
                     break;
                 default:
-                    res.render('404', { title: 'invalid entry', error: 'Invalid entry'});
-            }          
+                    res.render('404', { title: 'invalid entry', error: 'Invalid entry'});    
+                }           
         });
 };
 
