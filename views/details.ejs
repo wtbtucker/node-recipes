@@ -23,11 +23,11 @@
       </ol>
       <% if (recipe.creator == user) { %>
         <form action="/recipes/remove/<%= recipe._id %>">
-          <input type="submit" class = "submit" data-doc="<%= recipe._id %>" value="delete">
+          <input type="submit" class = "submit" value="delete">
         </form>
-        <button class="edit" data-doc="<%= recipe._id %>">
-          edit
-        </button>
+        <form action="/recipes/edit/<%= recipe._id %>">
+          <input type="submit" class = "submit" value="edit">
+        </form>
       <% } %>
 
     </div>

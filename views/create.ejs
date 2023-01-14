@@ -6,7 +6,9 @@
   <div class="create-recipe content">
     <div id="title-container">
       <h4 class="create-recipe-heading">Title</h4>
-      <input type="text" id="title" name="title" form="create-recipe" placeholder="Enter Title">
+
+      <!-- Display the title of the recipe if using the form to edit an existing recipe -->
+      <input type="text" id="title" name="title" form="create-recipe" value="<%= recipe ? recipe.title : '' %>">
     </div>
 
     <table id="ingredient-table">
@@ -14,12 +16,26 @@
         <th align="left" class="create-recipe-heading">Quantity</th>
         <th align="left" class="create-recipe-heading">Ingredient</th>
       </tr>
+      <!-- Display the list of ingredients if using the form to edit an existing recipe -->
+      <% if (recipe) { %>
+        <% for (let key of recipe.ingredients.keys()) { %>
+          <tr>
+            <td>
+              <input type="text" id="ingredient-quantity" name="ingredient-quantity" form="create-recipe" value="<%= recipe.ingredients.get(key) %>">
+            </td>
+            <td>
+              <input type="text" id="ingredient-name" name="ingredient-name" form="create-recipe" value="<%= key %>">
+            </td>
+          </tr>
+        <% } %>
+      <% } %>
+
       <tr>
         <td>
-          <input type="text" id="ingredient-quantity" name="ingredient-quantity" form="create-recipe" placeholder="Quantity">
+          <input type="text" id="ingredient-quantity" name="ingredient-quantity" form="create-recipe">
         </td>
         <td>
-          <input type="text" id="ingredient-name" name="ingredient-name" form="create-recipe" placeholder="Ingredient">
+          <input type="text" id="ingredient-name" name="ingredient-name" form="create-recipe">
         </td>
       </tr>
       <tr>
@@ -31,7 +47,15 @@
 
     <div id="instructions-container">
       <h4 class="create-recipe-heading">Instructions:</h4>
-      <input type="text" id="instructions" name="instructions[]" form="create-recipe" required>
+
+      <!-- Display steps of the recipe if using the form to edit an existing recipe -->
+      <% if (recipe) { %>
+        <% for (let step of recipe.instructions) { %>
+          <input type="text" id="instructions" name="instructions[]" form="create-recipe" value="<%= step %>">
+        <% } %>
+      <% } else { %>
+        <input type="text" id="instructions" name="instructions[]" form="create-recipe" required>
+      <% } %>
       <button id="new-instruction">Add Step</button>
     </div>
 
