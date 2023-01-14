@@ -26,17 +26,48 @@ const recipe_create_get = (req, res) => {
 
 const recipe_create_post = (req, res) => {
     const recipeRequest = req.body;
+    console.log(recipeRequest)
 
-    // Set the creator field to the username of the user making the request
-    const recipe = new Recipe({ title: recipeRequest["title"], instructions: recipeRequest["instructions"], ingredients: {}, creator: req.session.userid });
-    for (let i=0; i<recipeRequest["ingredient-quantity"].length; i++){
-        recipe.ingredients.set(recipeRequest["ingredient-name"][i], recipeRequest["ingredient-quantity"][i]);
-    }
-    recipe.save()
+    // If the recipe does not already exist create a new document
+    if (!recipeRequest["id"]) {
+
+        // Set the creator field to the username of the user making the request
+        const recipe = new Recipe({ 
+            title: recipeRequest["title"], 
+            instructions: recipeRequest["instructions"], 
+            ingredients: {}, 
+            creator: req.session.userid 
+        });
+        for (let i=0; i<recipeRequest["ingredient-quantity"].length; i++){
+            recipe.ingredients.set(recipeRequest["ingredient-name"][i], recipeRequest["ingredient-quantity"][i]);
+        }
+        recipe.save()
         .then(result => {
             res.redirect('/recipes');
         })
         .catch(err => console.log(err));
+
+    // If the recipe exists edit the corresponding document
+    } else {
+        const filter = { _id: recipeRequest["id"] }
+        const update = { 
+            title: recipeRequest["title"], 
+            instructions: recipeRequest["instructions"], 
+        }
+        Recipe.findOneAndUpdate(filter, update, { new: false })
+            .then(() => {
+                res.redirect('/recipes');
+            })
+            .catch(err => console.log(err));
+    }
+
+        // Set ingredients
+        // Will this function overide the existing ingredients?
+        // for (let i=0; i<recipeRequest["ingredient-quantity"].length; i++){
+        //     recipe.ingredients.set(recipeRequest["ingredient-name"][i], recipeRequest["ingredient-quantity"][i]);
+        // }
+    
+    
 };
 
 

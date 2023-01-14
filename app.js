@@ -25,7 +25,11 @@ app.set('view engine', 'ejs');
 
 // middleware and static files
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+app.use(express.urlencoded({
+    extended: true,
+ }));
+
 app.use(morgan('dev'));
 app.use((req, res, next) => {
     res.locals.path = req.path;
@@ -73,13 +77,11 @@ app.get('/about', (req, res) => {
     res.render('about', { title: 'About' });
 });
 
-// recipe routes
+// routers
 app.use('/recipes', requireAuth, recipeRoutes);
-
-// user routes
 app.use('/user', userRoutes);
 
-// 404 page
+// error page
 app.use((req, res) => {
     res.status(404).render('404', { title: '404', error: '404 Page not found' })
 });

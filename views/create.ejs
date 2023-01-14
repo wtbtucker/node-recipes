@@ -16,6 +16,7 @@
         <th align="left" class="create-recipe-heading">Quantity</th>
         <th align="left" class="create-recipe-heading">Ingredient</th>
       </tr>
+
       <!-- Display the list of ingredients if using the form to edit an existing recipe -->
       <% if (recipe) { %>
         <% for (let key of recipe.ingredients.keys()) { %>
@@ -59,7 +60,11 @@
       <button id="new-instruction">Add Step</button>
     </div>
 
+    <!-- Hidden boolean input element to identify POST request as a new recipe or an edit of existing one -->
+    <input type="hidden" name="id" form="create-recipe" value="<%= (recipe) ? recipe.id : null %>">
+
     <form action="/recipes" method="POST" id="create-recipe">
+      <!-- <input type="submit" class ="submit" value="Submit"> -->
       <button>Submit</button>
     </form>
   </div>
