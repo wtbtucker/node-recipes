@@ -19,13 +19,13 @@
 
       <!-- Display the list of ingredients if using the form to edit an existing recipe -->
       <% if (recipe) { %>
-        <% for (let key of recipe.ingredients.keys()) { %>
+        <% for (let ele of recipe.ingredients) { %>
           <tr>
             <td>
-              <input type="text" id="ingredient-quantity" name="ingredient-quantity" form="create-recipe" value="<%= recipe.ingredients.get(key) %>">
+              <input type="text" id="ingredient-quantity" name="ingredients[quantity]" form="create-recipe" value="<%= ele.quantity %>">
             </td>
             <td>
-              <input type="text" id="ingredient-name" name="ingredient-name" form="create-recipe" value="<%= key %>">
+              <input type="text" id="ingredient-name" name="ingredients[ingredient]" form="create-recipe" value="<%= ele.ingredient %>">
             </td>
           </tr>
         <% } %>
