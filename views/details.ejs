@@ -8,8 +8,8 @@
       <h2 class="details title"><%= recipe.title %></h2>
       <h3 class="details heading">Ingredients</h3>
       <ul class="details ingredients">
-        <% for (let key of recipe.ingredients.keys()) { %>
-          <li><%= recipe.ingredients.get(key) %> <%= key %>
+        <% for (let ele of recipe.ingredients) { %>
+          <li><%= ele.quantity %> <%= ele.ingredient %>
           </li>
         <% } %>
         </ul>

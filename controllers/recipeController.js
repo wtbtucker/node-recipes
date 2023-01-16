@@ -26,6 +26,7 @@ const recipe_create_get = (req, res) => {
 
 const recipe_create_post = (req, res) => {
     const recipeRequest = req.body;
+    const ingredients = recipeRequest['ingredients']
     console.log(recipeRequest)
 
     // If the recipe does not already exist create a new document
@@ -34,13 +35,24 @@ const recipe_create_post = (req, res) => {
         // Set the creator field to the username of the user making the request
         const recipe = new Recipe({ 
             title: recipeRequest["title"], 
-            instructions: recipeRequest["instructions"], 
-            ingredients: {}, 
+            instructions: recipeRequest["instructions"],
+            ingredients: [],
             creator: req.session.userid 
         });
-        for (let i=0; i<recipeRequest["ingredient-quantity"].length; i++){
-            recipe.ingredients.set(recipeRequest["ingredient-name"][i], recipeRequest["ingredient-quantity"][i]);
+
+        let ingredient_list = [];
+
+        for (let i=0; i<ingredients.quantity.length; i++){
+            ingredient_list.push({ ingredient: ingredients.ingredient[i], quantity: ingredients.quantity[i] });
         }
+        console.log(ingredient_list);
+        recipe.update({$push: {ingredients: {$each: ingredient_list}}}, {upsert: true}, function(err){
+            if(err){
+                console.log(err);
+            } else {
+                console.log("Successfully added")
+            }
+        })
         recipe.save()
         .then(result => {
             res.redirect('/recipes');
