@@ -34,7 +34,10 @@ const recipe_create_post = (req, res) => {
     for (let i=0; i<ingredients.quantity.length; i++){
         ingredient_list.push({ ingredient: ingredients.ingredient[i], quantity: ingredients.quantity[i] });
     }
-    console.log(ingredient_list);
+
+    // Remove blank entries for both ingredients and instructions
+    ingredient_list = ingredient_list.filter(element => element.ingredient !== '');
+    let instructions = recipeRequest['instructions'].filter(step => step !== '');
 
     // If the recipe does not already exist create a new document
     if (!recipeRequest["id"]) {
@@ -42,19 +45,16 @@ const recipe_create_post = (req, res) => {
         // Set the creator field to the username of the user making the request
         const recipe = new Recipe({ 
             title: recipeRequest["title"], 
-            instructions: recipeRequest["instructions"],
+            instructions: instructions,
             ingredients: [],
             creator: req.session.userid 
         });
 
         // Insert the list of ingredients into the ingregients field of the document
         recipe.updateOne({$push: {ingredients: {$each: ingredient_list}}}, {upsert: false}, function(err){
-            if(err){
-                console.log(err);
-            } else {
-                console.log("Successfully added")
-            }
-        })
+            if(err){ console.log(err); }
+            else { console.log("Successfully added") }
+        });
 
         // Save the new recipe document and redirect the user to the main index
         recipe.save()
@@ -67,7 +67,8 @@ const recipe_create_post = (req, res) => {
     } else {
         const old_recipe = Recipe.findById(recipeRequest['id'])
         old_recipe.updateOne(
-            {title: recipeRequest["title"], instructions: recipeRequest["instructions"]},
+            {title: recipeRequest["title"]}, 
+            {instructions: instructions},
             {ingredients: ingredient_list},
             {upsert: true},
             function(err){
